@@ -1,8 +1,6 @@
 ﻿# codeing= utf-8
 from graphics import *
-from Game.Bead import *
-from Game.Board import *
-from Game.Player import *
+
 from Game.ProcCtrl import *
 
 
@@ -42,19 +40,19 @@ class GameUI(object):
                     self.__pcPlayerHandle(player)
 
                 else:
-                    if False == self.__HMPlayerHandle(player):
+                    if self.__HMPlayerHandle(player) is None:
                         return
 
                 self.DrawBead()
 
                 Winner = self.__ctrl.VerdictWinLos()
-                if None != Winner:
+                if Winner is not None:
                     self.UIMsgShow('Winner is %s' % Winner)
 
                 if self.__ctrl.VerdictDraw():
                     self.UIMsgShow('Game is Draw')
 
-            if ExitFlag == True:
+            if ExitFlag:
                 break
 
                 # ==================UI 外观显示=================
@@ -203,11 +201,10 @@ class GameUI(object):
         while True:
             PosObj = self.Click()
             result = self.__CLICK_ACTION[self.__clickWhere(PosObj)](PosObj, player)
-            if result == False:
+            if not result:
                 continue
 
-            if result != None:
-                return result
+            return result
 
     def __btnReloadAction(self, PosObj, player):
         return self.__ctrl.LoadGame()
@@ -227,4 +224,4 @@ class GameUI(object):
         return True
 
     def __noDefineAction(self, PosObj, player):
-        return
+        return True
